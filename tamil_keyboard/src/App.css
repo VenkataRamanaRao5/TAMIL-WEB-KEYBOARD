@@ -5,7 +5,7 @@
     flex-direction: row;
 }
 .row_keys{
-    color: red;
+    color: rgb(51, 22, 22);
     border: 1px solid black;
     margin:0.5%;
     height:10%;
@@ -48,4 +48,23 @@ html,body,#root{
     height: 100%;
     border: 1px solid black;
     /* margin: 0.5%; */
+}
+.top_part{
+    display: flex;
+    justify-content:space-around;
+    height:30%;
+}
+.bottom_part{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    color: black;
+    height:70%;
+    font-weight: bold;
+    font-size:1.5rem;
+}
+.word{
+    color: rgb(62, 3, 3);
+    font-weight: bold;
+
 }
