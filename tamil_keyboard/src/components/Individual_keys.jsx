@@ -1,8 +1,18 @@
 import React from 'react'
+import {useState,useEffect} from 'react'
 
 const Individual_keys = ({ word, translation, shiftTranslation }) => {
+
+  function clrChange(event){
+    const element = event.currentTarget; //target
+    element.style.backgroundColor = 'rgb(231, 115, 115)';
+    setTimeout(() => {
+        element.style.backgroundColor = '';
+    },300);
+  }
+//useEffect(()=>{},[])
   return (
-    <div className="individual_keys">
+    <div className="individual_keys" onClick={clrChange}>
         <div className="top_part"> 
             <div className="word">{word?.toUpperCase()}</div>
             <div>{shiftTranslation}</div>
