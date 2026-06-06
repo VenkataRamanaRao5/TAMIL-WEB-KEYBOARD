@@ -1,14 +1,16 @@
 import React from 'react'
 import {useState,useEffect} from 'react'
 
-const Individual_keys = React.forwardRef(({ word, translation, shiftTranslation },ref) => {
+const Individual_keys = React.forwardRef(({ word, translation, shiftTranslation,active },ref) => {
 
   function clrChange(event){
-    const element = event.currentTarget; //target
-    element.style.backgroundColor = 'rgb(231, 115, 115)';
-    setTimeout(() => {
-        element.style.backgroundColor = '';
-    },300);
+    if(active){
+      const element = event.currentTarget; //target
+      element.style.backgroundColor = 'rgb(231, 115, 115)';
+      setTimeout(() => {
+          element.style.backgroundColor = '';
+      },300);
+    }
   }
 //useEffect(()=>{},[])
   return (
