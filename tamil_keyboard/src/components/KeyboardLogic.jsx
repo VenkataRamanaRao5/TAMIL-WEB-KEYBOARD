@@ -1,21 +1,22 @@
 import React from 'react'
 import {useEffect} from 'react'
 import wordMap from '../assets/wordMap.json'
-const update = ({text,setText,element}) => {
-  function handleKeyPress(event){
-    if(event.key === "Backspace"){
-      handleGameLogic("backspace");
-    }
 
-    else if(event.key === "ArrowLeft"){
-      handleGameLogic("cursor");
+const update = ({element,theMap}) => {
+  const shiftMap = {
+        '>': '.',
+        '<': ',',
+        '?': '/',
+        ':': ';',
+        '"': "'",
+        '{': '[',
+        '}': ']',
+        'P':'p',
+        'O':'o'
     }
-    else if(event.key === "Tab"){
-      handleGameLogic("tab");
-    }
-    else if(event.key.length===1){
-      handleGameLogic("insert", event.key);
-    }
+  function handleKeyPress(event){
+    const key = shiftMap[event.key] || event.key
+    element[key]?.click()
   }
   function handleGameLogic(action,value){
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import {useState,useEffect} from 'react'
 
-const Individual_keys = ({ word, translation, shiftTranslation }) => {
+const Individual_keys = React.forwardRef(({ word, translation, shiftTranslation },ref) => {
 
   function clrChange(event){
     const element = event.currentTarget; //target
@@ -12,7 +12,7 @@ const Individual_keys = ({ word, translation, shiftTranslation }) => {
   }
 //useEffect(()=>{},[])
   return (
-    <div className="individual_keys" onClick={clrChange}>
+    <div className="individual_keys" onClick={clrChange} ref={ref}>
         <div className="top_part"> 
             <div className="word">{word?.toUpperCase()}</div>
             <div>{shiftTranslation}</div>
@@ -22,6 +22,6 @@ const Individual_keys = ({ word, translation, shiftTranslation }) => {
         </div>
     </div>
   )
-}
+})
 
 export default Individual_keys
