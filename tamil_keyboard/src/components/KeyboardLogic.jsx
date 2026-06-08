@@ -23,20 +23,28 @@ const update = ({element,theMap,txtArea,text,setText,active}) => {
         'O':'o',
         // ':':'l'
     }
-  let crctBackspace = (start) => setTimeout(()=>{
-      txtArea.selectionStart = start - 1;
-      txtArea.selectionEnd = start - 1;
-    },0)
-  let crctText = (start) => setTimeout(()=>{
-      txtArea.selectionStart = start + 1;
-      txtArea.selectionEnd = start + 1;
-    },0)
+  let updateCursor = (postion) =>{
+    requestAnimationFrame(()=>{
+      txtArea.selectionStart = postion;
+      txtArea.selectionEnd = postion;
+    })
+  }
+  const allowedKeys = ["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"]
+  /*
+  OMG if use preventdefault it stops from usual rendering and stuff so it waits till action is done.
+  Ths I had to write logic for arrow keys but still it doens't work.
+  So type slowly! shit! wtf! The only solution is to handle cursor manually!
+  */
   function handleKeyPress(event){
     if(active){
+      if(!allowedKeys.includes(event.key)){
+        event.preventDefault();
+      }
       console.log('key pressed:',event.key);
 
-      const key = shiftMap[event.key] || event.key
-      element[key]?.click() //see element is used here!
+      let key = shiftMap[event.key] || event.key
+      key = key.toLowerCase();
+      element[key.toLowerCase()]?.click() //see element is used here!
 
       console.log('key pressed:',key);
 
@@ -45,44 +53,42 @@ const update = ({element,theMap,txtArea,text,setText,active}) => {
 
       console.log('start:end',start,end);
       console.log(key)
-
-      if(key === "Backspace"){
+      if(allowedKeys.includes(key)){
+        console.log('did nothing')
+      }
+      else if(key === "Backspace"){
         console.log('clicked backspace');
-        let newText = text.slice(0,start-1)+text.slice(end);
-        setText(newText);
-        crctBackspace(start);
+        setText((prev)=>{return prev.slice(0,start-1)+prev.slice(end); });
+        updateCursor(start-1);
       }
       else if(key === " "){
-        let newText = text.slice(0,start)+" "+text.slice(end);
-        setText(newText);
-        crctText(start);
+        setText((prev)=>{return prev.slice(0,start)+" "+prev.slice(end)});
+        updateCursor(start+1);
       }
       else if(key === "Tab"){
-        let newText = text.slice(0,start)+"\t"+text.slice(end);
-        setText(newText);
-        crctText(start);
+        setText((prev)=>{return prev.slice(0,start)+"\t"+prev.slice(end)});
+        updateCursor(start+1);
       }
       else{
         // console.log(theMap)
         console.log(theMap[key])
         console.log(theMap[key].translation,theMap[key].shiftTranslation)
-        let newText = text.slice(0,start)+theMap[key].translation+text.slice(end);
-        console.log(newText)
-        setText(newText);
-        crctText(start);
+        // let newText = text.slice(0,start)+theMap[key].translation+text.slice(end);
+        // console.log(newText)
+        console.log(event.shiftKey)
+        let value = event.shiftKey?theMap[key.toLowerCase()].shiftTranslation: theMap[key.toLowerCase()].translation
+        setText((prev)=>{return prev.slice(0,start)+value+prev.slice(end);});
+        updateCursor(start+1);
       }
     }
   }
-  function handleGameLogic(action,value){
 
-
-  }
   useEffect(()=>{
     window.addEventListener('keydown',handleKeyPress);
     return()=>{
       window.removeEventListener('keydown',handleKeyPress);
     }
-  })
+  },[text,active])
   return (
     <></>
   )
