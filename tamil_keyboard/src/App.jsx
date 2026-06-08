@@ -5,13 +5,13 @@ import TamilKeyBoard from './components/TamilKeyBoard'
 
 function App() {
 
-  // let [text,setText] = useState("");
+  let [text,setText] = useState("");
   // let [cursor,setCursor] = useState(0);
 
   return (
     <>
       <Headerr />
-      <TamilKeyBoard/>
+      <TamilKeyBoard text={text} setText={setText}/>
     </>
   )
 }

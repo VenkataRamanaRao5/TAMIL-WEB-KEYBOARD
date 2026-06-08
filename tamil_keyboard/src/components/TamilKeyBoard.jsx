@@ -5,7 +5,7 @@ import Individual_keys from './Individual_keys'
 import KeyboardLogic from './KeyboardLogic'
 import { useRef } from 'react'
 
-const TamilKeyBoard = () => {
+const TamilKeyBoard = ({text,setText}) => {
     let [active,setActive] = useState(false);
     const text1 = "qwertyuiop[]{}"
     const text2 = "asdfghjkl;'"
@@ -33,6 +33,7 @@ const TamilKeyBoard = () => {
     // KeyBoardLogic({text,setText,cursor,setCursor,theHash});
     // let ref = useRef();
     // useEffect(()=>{console.log(active)},[active])
+    let refTextArea = useRef();
   return (
 
     <div className="container">
@@ -46,10 +47,11 @@ const TamilKeyBoard = () => {
             className="textEditor" placeholder="துவங்கு...."
             onFocus={()=>{setActive(true)}}
             onBlur={()=>{setActive(false)}}
+            ref={refTextArea}
             />
             {/* // value={text} onChange={printIt}> */}
         </div>  
-        <KeyboardLogic element={ref.current} theMap={theHash}/> 
+        <KeyboardLogic element={ref.current} theMap={theHash} txtArea={refTextArea.current} active={active}/> 
     </div>
   )
 }
