@@ -15,19 +15,19 @@ const TamilKeyBoard = ({text,setText}) => {
     const ref = useRef({})
     for(let i=0;i<12;i++){
         let el = <Individual_keys ref={(ell)=>{ref.current[text1[i]]=ell}} key={i} word={text1[i]} active={active} translation={wordMap[text1[i]]?.normal} shiftTranslation={wordMap[text1[i]]?.shift} />
-        theHash[text1[i]] = el;
+        theHash[text1[i]] = {"translation":wordMap[text1[i]]?.normal,"shiftTranslation":wordMap[text1[i]]?.shift};
         rows1.push(el) //this is "optional chaining"
     }
     const rows2 = []
     for(let i=0;i<11;i++){
         let el = <Individual_keys ref={(ell)=>{ref.current[text2[i]]=ell}} key={i} word={text2[i]} active={active} translation={wordMap[text2[i]]?.normal} shiftTranslation={wordMap[text2[i]]?.shift} />
-        theHash[text2[i]] = el;
+        theHash[text2[i]] = {"translation":wordMap[text2[i]]?.normal,"shiftTranslation":wordMap[text2[i]]?.shift};
         rows2.push(el)
     }
     const rows3 = []
     for(let i=0;i<9;i++){
         let el = <Individual_keys ref={(ell)=>{ref.current[text3[i]]=ell}} key={i} word={text3[i]} active={active} translation={wordMap[text3[i]]?.normal} shiftTranslation={wordMap[text3[i]]?.shift} />
-        theHash[text3[i]] = el;
+        theHash[text3[i]] = {"translation":wordMap[text3[i]]?.normal,"shiftTranslation":wordMap[text3[i]]?.shift};
         rows3.push(el)
     }
     // KeyBoardLogic({text,setText,cursor,setCursor,theHash});
@@ -48,10 +48,11 @@ const TamilKeyBoard = ({text,setText}) => {
             onFocus={()=>{setActive(true)}}
             onBlur={()=>{setActive(false)}}
             ref={refTextArea}
+            value={text}
             />
             {/* // value={text} onChange={printIt}> */}
         </div>  
-        <KeyboardLogic element={ref.current} theMap={theHash} txtArea={refTextArea.current} active={active}/> 
+        <KeyboardLogic element={ref.current} theMap={theHash} txtArea={refTextArea.current} active={active} text={text} setText={setText}/> 
     </div>
   )
 }
