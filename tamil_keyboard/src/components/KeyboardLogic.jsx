@@ -1,6 +1,7 @@
 import React from 'react'
 import {useEffect} from 'react'
 import wordMap from '../assets/wordMap.json'
+import uyirmei from '../assets/uyirmei.json'
 
 const update = ({element,theMap,txtArea,text,setText,active}) => {
   /*
@@ -43,7 +44,7 @@ const update = ({element,theMap,txtArea,text,setText,active}) => {
       console.log('key pressed:',event.key);
 
       let key = shiftMap[event.key] || event.key
-      key = key.toLowerCase();
+      // key = key.toLowerCase();
       element[key.toLowerCase()]?.click() //see element is used here!
 
       console.log('key pressed:',key);
@@ -60,8 +61,10 @@ const update = ({element,theMap,txtArea,text,setText,active}) => {
         console.log('clicked backspace');
         setText((prev)=>{return prev.slice(0,start-1)+prev.slice(end); });
         updateCursor(start-1);
+        return
       }
-      else if(key === " "){
+      key = key.toLowerCase(); //fixed it moved it to middle
+      if(key === " "){
         setText((prev)=>{return prev.slice(0,start)+" "+prev.slice(end)});
         updateCursor(start+1);
       }
@@ -77,6 +80,15 @@ const update = ({element,theMap,txtArea,text,setText,active}) => {
         // console.log(newText)
         console.log(event.shiftKey)
         let value = event.shiftKey?theMap[key.toLowerCase()].shiftTranslation: theMap[key.toLowerCase()].translation
+        if(start>0 && "அஆஇஈஉஊஎஏஐஒஓஔ".includes(value) && "கஙசஞடணதநபமயரலவழளறன".includes(text.slice(-1))){
+          let v = text.slice(-1)
+          setText((prev)=>{return prev.slice(0,start-1)+prev.slice(end); });
+          updateCursor(start-1);
+          value = uyirmei[v][value];
+        }
+        else if(start>0 && "்" === value && "அஆஇஈஉஊஎஏஐஒஓஔ".includes(text.slice(-1))){
+          return
+        }
         setText((prev)=>{return prev.slice(0,start)+value+prev.slice(end);});
         updateCursor(start+1);
       }
