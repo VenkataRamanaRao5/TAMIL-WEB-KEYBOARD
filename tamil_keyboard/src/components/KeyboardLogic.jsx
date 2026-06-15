@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import {useEffect} from 'react'
 import wordMap from '../assets/wordMap.json'
 import uyirmei from '../assets/uyirmei.json'
@@ -12,6 +12,7 @@ const update = ({element,theMap,txtArea,text,setText,active}) => {
     -- txtArea = to get start and end pointers of text area
     -- active  = to check focus of text area!
   */
+ const position = useRef(0)
   const shiftMap = {
         '>': '.',
         '<': ',',
@@ -24,11 +25,13 @@ const update = ({element,theMap,txtArea,text,setText,active}) => {
         'O':'o',
         // ':':'l'
     }
-  let updateCursor = (postion) =>{
-    requestAnimationFrame(()=>{
-      txtArea.selectionStart = postion;
-      txtArea.selectionEnd = postion;
-    })
+
+    /*
+    Use a ref to keep track of cursor position
+    across re-renders.
+    */
+  let updateCursor = (pos) =>{
+    position.current = pos
   }
   const allowedKeys = ["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"]
   /*
@@ -97,6 +100,14 @@ const update = ({element,theMap,txtArea,text,setText,active}) => {
 
   useEffect(()=>{
     window.addEventListener('keydown',handleKeyPress);
+
+    if(txtArea){
+
+      txtArea.selectionStart = position.current;
+      txtArea.selectionEnd = position.current;
+    }
+
+    console.log("Changed text/active", txtArea?.selectionStart, txtArea?.selectionEnd)
     return()=>{
       window.removeEventListener('keydown',handleKeyPress);
     }
